@@ -50,7 +50,7 @@ function activate_russell_instagram_fetcher()
 /**
  * Add the admin menu; adapted from: https://www.sitepoint.com/wordpress-settings-api-build-custom-admin-page/
  */
-add_action('admin_menu', 'instagrabber_admin_menu');
+// add_action('admin_menu', 'instagrabber_admin_menu');
 /**
  * Create two options: IG username, and # of posts
  */
@@ -96,18 +96,18 @@ function instagrabber_get_ig_posts($atts)
 	return $output;
 }
 
-function add_instagrabber_stylesheet()
-{
-	wp_register_style('rm-instagrabber-styles', plugin_dir_url(__FILE__) . 'public/css/russell-instagram-fetcher-public.css');
-	wp_enqueue_style('rm-instagrabber-styles');
-}
+// function add_instagrabber_stylesheet()
+// {
+// 	wp_register_style('rm-instagrabber-styles', plugin_dir_url(__FILE__) . 'public/css/russell-instagram-fetcher-public.css');
+// 	wp_enqueue_style('rm-instagrabber-styles');
+// }
 
-add_action('wp_print_styles', 'add_instagrabber_stylesheet'); // from https://www.dummies.com/web-design-development/wordpress/enhance-wordpress-plugins-css-javascript/
+// add_action('wp_print_styles', 'add_instagrabber_stylesheet'); // from https://www.dummies.com/web-design-development/wordpress/enhance-wordpress-plugins-css-javascript/
 
-function instagrabber_admin_menu()
-{
-	add_options_page('Instagrabber Settings', 'Instagrabber', 'manage_options', 'instagrabber-settings-page', 'instagrabber_settings_page'); // puts options in Settings > Instagrabber
-}
+// function instagrabber_admin_menu()
+// {
+// 	add_options_page('Instagrabber Settings', 'Instagrabber', 'manage_options', 'instagrabber-settings-page', 'instagrabber_settings_page'); // puts options in Settings > Instagrabber
+// }
 
 function instagrabber_settings_init()
 {
