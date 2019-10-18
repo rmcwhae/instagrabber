@@ -78,6 +78,8 @@ function instagrabber_get_ig_posts($atts)
 		foreach ($posts as $key => $value) {
 			$output .= '<img src=' . $posts[$key]['node']['thumbnail_src'] . ' />';
 			$output .= '<p>' . $posts[$key]['node']['edge_media_to_caption']['edges'][0]['node']['text'] . '</p>';
+			$output .= '<p>' . $posts[$key]['node']['taken_at_timestamp'] . '</p>';
+			// use date with global date format?
 		};
 		// $output .= $posts[0]['node']['thumbnail_src'];
 	}
