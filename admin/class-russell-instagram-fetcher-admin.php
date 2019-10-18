@@ -146,6 +146,6 @@ class Russell_Instagram_Fetcher_Admin
 
 	public function display_plugin_setup_page()
 	{
-		include_once('partials/wp-cbf-admin-display.php');
+		include_once('partials/russell-instagram-fetcher-admin-display.php');
 	}
 }
