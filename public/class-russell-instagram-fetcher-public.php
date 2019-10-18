@@ -114,7 +114,7 @@ class Russell_Instagram_Fetcher_Public
 		// Grab all options
 		$options = get_option($this->plugin_name);
 
-		// Isolate the two that we're concernec about
+		// Isolate the two that we're concerned about
 		$ig_username = $options['ig_username'];
 		$ig_post_limit =  $options['ig_post_limit'];
 
@@ -125,14 +125,13 @@ class Russell_Instagram_Fetcher_Public
 			$ig_post_limit = 5; // set default to 5 if not specified rather than throw an error
 		}
 
-		$url = 'https://www.instagram.com/' . $ig_username . '/?__a=1'; // could make this more elegant/RESTful…
+		$url = 'https://www.instagram.com/' . $ig_username . '/?__a=1';
 		$response = file_get_contents($url);
 		if ($response) {
 			$response = json_decode($response, true); // 2nd arg 'true' forces array to be returned, not object
 
 			$posts = $response['graphql']['user']['edge_owner_to_timeline_media']['edges']; // grab the array that we actually care about; also this data is assumed to be sorted reverse chronologically (not verified here)
 			array_splice($posts, $ig_post_limit); // chop off what we don't need (wasteful, I know)
-			// var_dump($posts);
 			foreach ($posts as $key => $value) {
 				$thumbnail_url = $posts[$key]['node']['thumbnail_src'];
 				$img_description = $posts[$key]['node']['edge_media_to_caption']['edges'][0]['node']['text'];
