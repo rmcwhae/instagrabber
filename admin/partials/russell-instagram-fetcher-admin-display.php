@@ -14,3 +14,41 @@
 ?>
 
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
+<h2><?php echo esc_html(get_admin_page_title()); ?></h2>
+
+<?php
+// settings_fields('instagrabberPlugin');
+// do_settings_sections('instagrabberPlugin');
+// submit_button();
+?>
+
+
+<form action='options.php' method='post' name='instagrabber-options'>
+
+  <?php
+  //Grab all options
+  $options = get_option($this->plugin_name);
+
+  $ig_username = $options['ig_username'];
+  $ig_post_limit =  $options['ig_post_limit'];
+  
+  settings_fields($this->plugin_name);
+  do_settings_sections($this->plugin_name);
+
+  ?>
+
+  Include the latest posts from the specified Instagram account in a page or post with the [instagrabber] shortcode.
+  <table class="form-table" role="presentation">
+    <tr>
+      <th scope="row"><label for="<?php echo $this->plugin_name; ?>-ig_username">Instagram Username</label></th>
+      <td> <input id="<?php echo $this->plugin_name; ?>-ig_username" type='text' name="<?php echo $this->plugin_name; ?>[ig_username]" value="<?php echo $ig_username; ?>">
+      </td>
+    </tr>
+    <tr>
+      <th scope="row"><label for="<?php echo $this->plugin_name; ?>-ig_post_limit">Number of Recent Posts to Display</label></th>
+      <td> <input id="<?php echo $this->plugin_name; ?>-ig_post_limit" type='text' name="<?php echo $this->plugin_name; ?>[ig_post_limit]" value="<?php echo $ig_post_limit; ?>">
+      </td>
+    </tr>
+  </table>
+  <?php submit_button(); ?>
+</form>

@@ -148,4 +148,21 @@ class Russell_Instagram_Fetcher_Admin
 	{
 		include_once('partials/russell-instagram-fetcher-admin-display.php');
 	}
+
+	public function options_update()
+	{
+		register_setting($this->plugin_name, $this->plugin_name, array($this, 'validate'));
+	}
+
+	public function validate($input)
+	{
+		// All checkboxes inputs        
+		$valid = array();
+
+		//Cleanup
+		$valid['ig_username'] = (isset($input['ig_username']) && !empty($input['ig_username'])) ? $input['ig_username'] : '';
+		$valid['ig_post_limit'] = (isset($input['ig_post_limit']) && !empty($input['ig_post_limit']) && $input['ig_post_limit'] > 0) ? $input['ig_post_limit'] : 5; // defaults to 5 if incorrect number is given (pretty rudimentary/opaque validation…)
+
+		return $valid;
+	}
 }
