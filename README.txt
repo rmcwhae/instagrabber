@@ -24,23 +24,11 @@ This simple plugin displays the latest posts of a specified Instagram account. O
 1. Place the `[instagrabber]` shortcode in your page or posts.
 1. Styling can be changed by modifying `russell-instagram-fetcher\public\css\russell-instagram-fetcher-public.css`.
 
-== Frequently Asked Questions ==
-
-= A question that someone might have =
-
-An answer to that question.
-
-= What about foo bar? =
-
-Answer to foo bar dilemma.
-
 == Screenshots ==
 
-1. This screen shot description corresponds to screenshot-1.(png|jpg|jpeg|gif). Note that the screenshot is taken from
-the /assets directory or the directory that contains the stable readme.txt (tags or trunk). Screenshots in the /assets
-directory take precedence. For example, `/assets/screenshot-1.png` would win over `/tags/4.3/screenshot-1.png`
-(or jpg, jpeg, gif).
-2. This is the second screen shot
+1. Instagrabber in action on a page.
+2. Instagrabber settings
+3. Instagrabber shortcode
 
 == Changelog ==
 
