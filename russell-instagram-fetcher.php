@@ -58,7 +58,7 @@ add_action('admin_init', 'instagrabber_settings_init');
 
 function instagrabber_admin_menu()
 {
-	add_options_page('Instagrabber Settings', 'Instagrabber', 'manage_options', 'instagrabber-settings-page', 'instagrabber_settings_page');
+	add_options_page('Instagrabber Settings', 'Instagrabber', 'manage_options', 'instagrabber-settings-page', 'instagrabber_settings_page'); // puts options in Settings > Instagrabber
 }
 
 function instagrabber_settings_init()
@@ -66,7 +66,7 @@ function instagrabber_settings_init()
 	register_setting('instagrabberPlugin', 'instagrabber_settings');
 	add_settings_section(
 		'instagrabberPlugin_section',
-		__('Our Section Title', 'wordpress'),
+		__('', 'wordpress'),
 		'instagrabber_settings_section_callback',
 		'instagrabberPlugin'
 	);
@@ -106,7 +106,7 @@ function instagrabber_field_num_posts_render()
 
 function instagrabber_settings_section_callback()
 {
-	echo __('Stuff on shortcodes here	', 'wordpress');
+	echo __('Stuff on shortcodes here	…', 'wordpress');
 }
 
 function instagrabber_settings_page()
