@@ -56,6 +56,22 @@ add_action('admin_menu', 'instagrabber_admin_menu');
  */
 add_action('admin_init', 'instagrabber_settings_init');
 
+//[foobar]
+function instagrabber_get_posts($atts)
+{
+	$options = get_option('instagrabber_settings');
+	$ig_handle = $options['instagrabber_field_username']; // grab the username from WordPress options
+	$post_limit = $options['instagrabber_field_num_posts']; // grab the post limit from WordPress options
+	$output = "My IG handle is " . $ig_handle . " and here are my latest " . $post_limit . " posts:";
+	$url = 'https://www.instagram.com/'.$ig_handle.'/?__a=1';
+	$response = file_get_contents($url);
+	if ($response) {
+    $output .= $response;
+}
+	return $output;
+}
+add_shortcode('instagrabber', 'instagrabber_get_posts');
+
 function instagrabber_admin_menu()
 {
 	add_options_page('Instagrabber Settings', 'Instagrabber', 'manage_options', 'instagrabber-settings-page', 'instagrabber_settings_page'); // puts options in Settings > Instagrabber
