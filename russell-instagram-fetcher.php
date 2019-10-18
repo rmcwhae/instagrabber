@@ -67,16 +67,16 @@ function instagrabber_get_ig_posts($atts)
 	$ig_handle = $options['instagrabber_field_username']; // grab the username from WordPress options
 	$post_limit = $options['instagrabber_field_num_posts']; // grab the post limit from WordPress options
 	$output = "My IG handle is " . $ig_handle . " and here are my latest " . $post_limit . " posts:";
-	$url = 'https://www.instagram.com/' . $ig_handle . '/?__a=1';
+	$url = 'https://www.instagram.com/' . $ig_handle . '/?__a=1'; // could make this more elegant/RESTful…
 	$response = file_get_contents($url);
 	if ($response) {
-		// $output .= $response;
-		$response = json_decode($response, true);
+		$response = json_decode($response, true); // 2nd arg 'true' forces array to be returned, not object
 
 		$posts = $response['graphql']['user']['edge_owner_to_timeline_media']['edges'];
+		array_splice($posts, $post_limit); // chop off what we don't need
 		var_dump($posts);
 		foreach ($posts as $key => $value) {
-			$output .= '<img src='.$posts[$key]['node']['thumbnail_src'].' />';
+			$output .= '<img src=' . $posts[$key]['node']['thumbnail_src'] . ' />';
 		};
 		// $output .= $posts[0]['node']['thumbnail_src'];
 	}
