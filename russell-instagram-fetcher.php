@@ -63,10 +63,11 @@ add_shortcode('instagrabber', 'instagrabber_get_ig_posts');
 //[foobar]
 function instagrabber_get_ig_posts($atts)
 {
+	$output = '';
 	$options = get_option('instagrabber_settings');
 	$ig_handle = $options['instagrabber_field_username']; // grab the username from WordPress options
 	$post_limit = $options['instagrabber_field_num_posts']; // grab the post limit from WordPress options
-	$output = "My IG handle is " . $ig_handle . " and here are my latest " . $post_limit . " posts:";
+	// $output = "My IG handle is " . $ig_handle . " and here are my latest " . $post_limit . " posts:";
 	$url = 'https://www.instagram.com/' . $ig_handle . '/?__a=1'; // could make this more elegant/RESTful…
 	$response = file_get_contents($url);
 	if ($response) {
@@ -78,10 +79,10 @@ function instagrabber_get_ig_posts($atts)
 		foreach ($posts as $key => $value) {
 			$output .= '<img src=' . $posts[$key]['node']['thumbnail_src'] . ' />';
 			$output .= '<p>' . $posts[$key]['node']['edge_media_to_caption']['edges'][0]['node']['text'] . '</p>';
-			$output .= '<p>' . $posts[$key]['node']['taken_at_timestamp'] . '</p>';
-			// use date with global date format?
+			$timestamp = $posts[$key]['node']['taken_at_timestamp'];
+			$friendly_date = date_i18n(get_option('date_format'), $timestamp); // date according to WordPress options; courtesy of: https://wordpress.stackexchange.com/questions/229474/converting-unix-timestamp-to-wordpress-date
+			$output .= '<p>' . $friendly_date . '</p>';
 		};
-		// $output .= $posts[0]['node']['thumbnail_src'];
 	}
 	return $output;
 }
