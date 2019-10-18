@@ -15,7 +15,7 @@
  * @wordpress-plugin
  * Plugin Name:       Russell’s Instagrabber
  * Plugin URI:        https://github.com/rmcwhae/instagrabber
- * Description:       This is a short description of what the plugin does. It's displayed in the WordPress admin area.
+ * Description:       A simple Instagram fetcher.
  * Version:           1.0.0
  * Author:            Russell McWhae
  * Author URI:        https://russellmcwhae.ca
@@ -45,6 +45,80 @@ function activate_russell_instagram_fetcher() {
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-russell-instagram-fetcher-activator.php';
 	Russell_Instagram_Fetcher_Activator::activate();
 }
+
+/**
+ * Add the admin menu; adapted from: https://www.sitepoint.com/wordpress-settings-api-build-custom-admin-page/
+ */
+add_action('admin_menu', 'instagrabber_admin_menu');
+/**
+ * Create two options: IG username, and # of posts
+ */
+add_action('admin_init', 'instagrabber_settings_init');
+
+function instagrabber_admin_menu() {
+	add_options_page('Instagrabber Settings', 'Instagrabber', 'manage_options', 'instagrabber-settings-page', 'instagrabber_settings_page');
+}
+
+function instagrabber_settings_init(  ) {
+	register_setting( 'instagrabberPlugin', 'instagrabber_settings' );
+	add_settings_section(
+			'instagrabberPlugin_section',
+			__( 'Our Section Title', 'wordpress' ),
+			'instagrabber_settings_section_callback',
+			'instagrabberPlugin'
+	);
+
+	add_settings_field(
+			'instagrabber_field_username',
+			__( 'Instagram Username', 'wordpress' ),
+			'instagrabber_field_username_render',
+			'instagrabberPlugin',
+			'instagrabberPlugin_section'
+	);
+
+	add_settings_field(
+			'instagrabber_field_num_posts',
+			__( 'Number of Recent Posts to Display', 'wordpress' ),
+			'instagrabber_field_num_posts_render',
+			'instagrabberPlugin',
+			'instagrabberPlugin_section'
+	);
+}
+
+function instagrabber_field_username_render(  ) {
+	$options = get_option( 'instagrabber_settings' );
+	?>
+	<input type='text' name='instagrabber_settings[instagrabber_field_username]' value='<?php echo $options['instagrabber_field_username']; ?>'>
+	<?php
+}
+
+function instagrabber_field_num_posts_render(  ) {
+	$options = get_option( 'instagrabber_settings' );
+	?>
+	<input type='text' name='instagrabber_settings[instagrabber_field_num_posts]' value='<?php echo $options['instagrabber_field_num_posts']; ?>'>
+	<?php
+}
+
+function instagrabber_settings_section_callback(  ) {
+	echo __( 'Stuff on shortcodes here	', 'wordpress' );
+}
+
+function instagrabber_settings_page(  ) {
+	?>
+	<form action='options.php' method='post'>
+
+			<h2>Instagrabber Settings Admin Page</h2>
+
+			<?php
+			settings_fields( 'instagrabberPlugin' );
+			do_settings_sections( 'instagrabberPlugin' );
+			submit_button();
+			?>
+
+	</form>
+	<?php
+}
+
 
 /**
  * The code that runs during plugin deactivation.
