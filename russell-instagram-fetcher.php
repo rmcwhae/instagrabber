@@ -72,11 +72,12 @@ function instagrabber_get_ig_posts($atts)
 	if ($response) {
 		$response = json_decode($response, true); // 2nd arg 'true' forces array to be returned, not object
 
-		$posts = $response['graphql']['user']['edge_owner_to_timeline_media']['edges'];
-		array_splice($posts, $post_limit); // chop off what we don't need
-		var_dump($posts);
+		$posts = $response['graphql']['user']['edge_owner_to_timeline_media']['edges']; // grab the array that we actually care about; also this data is assumed to be sorted reverse chronologically
+		array_splice($posts, $post_limit); // chop off what we don't need (wasteful, I know)
+		// var_dump($posts);
 		foreach ($posts as $key => $value) {
 			$output .= '<img src=' . $posts[$key]['node']['thumbnail_src'] . ' />';
+			$output .= '<p>' . $posts[$key]['node']['edge_media_to_caption']['edges'][0]['node']['text'] . '</p>';
 		};
 		// $output .= $posts[0]['node']['thumbnail_src'];
 	}
