@@ -67,6 +67,12 @@ function instagrabber_get_ig_posts($atts)
 	$options = get_option('instagrabber_settings');
 	$ig_handle = $options['instagrabber_field_username']; // grab the username from WordPress options
 	$post_limit = $options['instagrabber_field_num_posts']; // grab the post limit from WordPress options
+	if (!$ig_handle) {
+		return '<p>Error: No Instagram account name provided. Please provide one in Admin > Settings > Instagrabber.</p>';
+	}
+	if (!$post_limit) {
+		$post_limit = 5; // set default to 5 if not specified rather than throw an error
+	}
 	// $output = "My IG handle is " . $ig_handle . " and here are my latest " . $post_limit . " posts:";
 	$url = 'https://www.instagram.com/' . $ig_handle . '/?__a=1'; // could make this more elegant/RESTful…
 	$response = file_get_contents($url);
@@ -83,9 +89,10 @@ function instagrabber_get_ig_posts($atts)
 			$friendly_date = date_i18n(get_option('date_format'), $timestamp); // date formatted according to WordPress options; courtesy of: https://wordpress.stackexchange.com/questions/229474/converting-unix-timestamp-to-wordpress-date
 
 			$output .= '<img src=' . $thumbnail_url . ' />';
-			$output .= '<p>' . $img_description . '</p>';
-			$output .= '<p>' . $friendly_date . '</p>';
+			$output .= '<p>' . $img_description . ' <time class="entry-date published">' . $friendly_date . '</time></p>';
 		};
+	} else {
+		return '<p>Error: Instagram account not found</p>';
 	}
 	return $output;
 }
