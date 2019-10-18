@@ -73,14 +73,17 @@ function instagrabber_get_ig_posts($atts)
 	if ($response) {
 		$response = json_decode($response, true); // 2nd arg 'true' forces array to be returned, not object
 
-		$posts = $response['graphql']['user']['edge_owner_to_timeline_media']['edges']; // grab the array that we actually care about; also this data is assumed to be sorted reverse chronologically
+		$posts = $response['graphql']['user']['edge_owner_to_timeline_media']['edges']; // grab the array that we actually care about; also this data is assumed to be sorted reverse chronologically (not verified here)
 		array_splice($posts, $post_limit); // chop off what we don't need (wasteful, I know)
 		// var_dump($posts);
 		foreach ($posts as $key => $value) {
-			$output .= '<img src=' . $posts[$key]['node']['thumbnail_src'] . ' />';
-			$output .= '<p>' . $posts[$key]['node']['edge_media_to_caption']['edges'][0]['node']['text'] . '</p>';
+			$thumbnail_url = $posts[$key]['node']['thumbnail_src'];
+			$img_description = $posts[$key]['node']['edge_media_to_caption']['edges'][0]['node']['text'];
 			$timestamp = $posts[$key]['node']['taken_at_timestamp'];
-			$friendly_date = date_i18n(get_option('date_format'), $timestamp); // date according to WordPress options; courtesy of: https://wordpress.stackexchange.com/questions/229474/converting-unix-timestamp-to-wordpress-date
+			$friendly_date = date_i18n(get_option('date_format'), $timestamp); // date formatted according to WordPress options; courtesy of: https://wordpress.stackexchange.com/questions/229474/converting-unix-timestamp-to-wordpress-date
+
+			$output .= '<img src=' . $thumbnail_url . ' />';
+			$output .= '<p>' . $img_description . '</p>';
 			$output .= '<p>' . $friendly_date . '</p>';
 		};
 	}
