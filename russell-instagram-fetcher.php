@@ -48,64 +48,6 @@ function activate_russell_instagram_fetcher()
 }
 
 /**
- * Add the admin menu; adapted from: https://www.sitepoint.com/wordpress-settings-api-build-custom-admin-page/
- */
-// add_action('admin_menu', 'instagrabber_admin_menu');
-/**
- * Create two options: IG username, and # of posts
- */
-// add_action('admin_init', 'instagrabber_settings_init');
-/**
- * Create the shortcode
- */
-add_shortcode('instagrabber', 'instagrabber_get_ig_posts');
-
-function instagrabber_get_ig_posts($atts)
-{
-	$output = '';
-	$options = get_option('instagrabber_settings');
-	$ig_handle = $options['instagrabber_field_username']; // grab the username from WordPress options
-	$post_limit = $options['instagrabber_field_num_posts']; // grab the post limit from WordPress options
-	if (!$ig_handle) {
-		return '<p>Error: No Instagram account name provided. Please provide one in Admin > Settings > Instagrabber.</p>';
-	}
-	if (!$post_limit) {
-		$post_limit = 5; // set default to 5 if not specified rather than throw an error
-	}
-	// $output = "My IG handle is " . $ig_handle . " and here are my latest " . $post_limit . " posts:";
-	$url = 'https://www.instagram.com/' . $ig_handle . '/?__a=1'; // could make this more elegant/RESTful…
-	$response = file_get_contents($url);
-	if ($response) {
-		$response = json_decode($response, true); // 2nd arg 'true' forces array to be returned, not object
-
-		$posts = $response['graphql']['user']['edge_owner_to_timeline_media']['edges']; // grab the array that we actually care about; also this data is assumed to be sorted reverse chronologically (not verified here)
-		array_splice($posts, $post_limit); // chop off what we don't need (wasteful, I know)
-		// var_dump($posts);
-		foreach ($posts as $key => $value) {
-			$thumbnail_url = $posts[$key]['node']['thumbnail_src'];
-			$img_description = $posts[$key]['node']['edge_media_to_caption']['edges'][0]['node']['text'];
-			$timestamp = $posts[$key]['node']['taken_at_timestamp'];
-			$friendly_date = date_i18n(get_option('date_format'), $timestamp); // date formatted according to WordPress options; courtesy of: https://wordpress.stackexchange.com/questions/229474/converting-unix-timestamp-to-wordpress-date
-
-			$output .= "<div class='rm-instagrabber'><img src=" . $thumbnail_url . " />";
-			$output .= '<p>' . $img_description . ' <time class="entry-date published">' . $friendly_date . '</time></p></div>';
-		};
-	} else {
-		return '<p>Error: Instagram account not found</p>';
-	}
-	return $output;
-}
-
-// function add_instagrabber_stylesheet()
-// {
-// 	wp_register_style('rm-instagrabber-styles', plugin_dir_url(__FILE__) . 'public/css/russell-instagram-fetcher-public.css');
-// 	wp_enqueue_style('rm-instagrabber-styles');
-// }
-
-// add_action('wp_print_styles', 'add_instagrabber_stylesheet'); // from https://www.dummies.com/web-design-development/wordpress/enhance-wordpress-plugins-css-javascript/
-
-
-/**
  * The code that runs during plugin deactivation.
  * This action is documented in includes/class-russell-instagram-fetcher-deactivator.php
  */
