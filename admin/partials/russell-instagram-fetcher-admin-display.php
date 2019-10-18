@@ -16,19 +16,15 @@
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
 <h2><?php echo esc_html(get_admin_page_title()); ?></h2>
 
-<?php
-// settings_fields('instagrabberPlugin');
-// do_settings_sections('instagrabberPlugin');
-// submit_button();
-?>
-
 
 <form action='options.php' method='post' name='instagrabber-options'>
 
   <?php
-  //Grab all options
+  // Courtesy of https://scotch.io/tutorials/how-to-build-a-wordpress-plugin-part-1
+  // Grab all options
   $options = get_option($this->plugin_name);
 
+  // Isolate the two that we're concernec about
   $ig_username = $options['ig_username'];
   $ig_post_limit =  $options['ig_post_limit'];
   
