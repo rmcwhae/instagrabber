@@ -117,15 +117,14 @@ class Russell_Instagram_Fetcher_Public
 		// Isolate the two that we're concernec about
 		$ig_username = $options['ig_username'];
 		$ig_post_limit =  $options['ig_post_limit'];
-		// $ig_username = $options['instagrabber_field_username']; // grab the username from WordPress options
-		// $ig_post_limit = $options['instagrabber_field_num_posts']; // grab the post limit from WordPress options
+
 		if (!$ig_username) {
-			return '<p>Error: No Instagram account name provided. Please provide one in Admin > Settings > Instagrabber.</p>';
+			return '<p class="error">Error: No Instagram account name provided. Please provide one in Admin > Settings > Instagrabber.</p>';
 		}
 		if (!$ig_post_limit) {
 			$ig_post_limit = 5; // set default to 5 if not specified rather than throw an error
 		}
-		// $output = "My IG handle is " . $ig_username . " and here are my latest " . $ig_post_limit . " posts:";
+
 		$url = 'https://www.instagram.com/' . $ig_username . '/?__a=1'; // could make this more elegant/RESTful…
 		$response = file_get_contents($url);
 		if ($response) {
@@ -144,7 +143,7 @@ class Russell_Instagram_Fetcher_Public
 				$output .= '<p>' . $img_description . ' <time class="entry-date published">' . $friendly_date . '</time></p></div>';
 			};
 		} else {
-			return '<p>Error: Instagram account not found</p>';
+			return '<p class="error">Error: Instagram account not found.</p>';
 		}
 		return $output;
 	}
