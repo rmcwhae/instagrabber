@@ -60,7 +60,6 @@ add_action('admin_init', 'instagrabber_settings_init');
  */
 add_shortcode('instagrabber', 'instagrabber_get_ig_posts');
 
-//[foobar]
 function instagrabber_get_ig_posts($atts)
 {
 	$output = '';
@@ -88,14 +87,22 @@ function instagrabber_get_ig_posts($atts)
 			$timestamp = $posts[$key]['node']['taken_at_timestamp'];
 			$friendly_date = date_i18n(get_option('date_format'), $timestamp); // date formatted according to WordPress options; courtesy of: https://wordpress.stackexchange.com/questions/229474/converting-unix-timestamp-to-wordpress-date
 
-			$output .= '<img src=' . $thumbnail_url . ' />';
-			$output .= '<p>' . $img_description . ' <time class="entry-date published">' . $friendly_date . '</time></p>';
+			$output .= "<div class='rm-instagrabber'><img src=" . $thumbnail_url . " />";
+			$output .= '<p>' . $img_description . ' <time class="entry-date published">' . $friendly_date . '</time></p></div>';
 		};
 	} else {
 		return '<p>Error: Instagram account not found</p>';
 	}
 	return $output;
 }
+
+function add_instagrabber_stylesheet()
+{
+	wp_register_style('rm-instagrabber-styles', plugin_dir_url(__FILE__) . 'styles/rm-instagrabber-styles.css');
+	wp_enqueue_style('rm-instagrabber-styles');
+}
+
+add_action('wp_print_styles', 'add_instagrabber_stylesheet'); // from https://www.dummies.com/web-design-development/wordpress/enhance-wordpress-plugins-css-javascript/
 
 function instagrabber_admin_menu()
 {
@@ -147,7 +154,7 @@ function instagrabber_field_num_posts_render()
 
 function instagrabber_settings_section_callback()
 {
-	echo __('Stuff on shortcodes here	…', 'wordpress');
+	echo __('Include the latest posts from the specified Instagram account in a page or post with the [instagrabber] shortcode.', 'wordpress');
 }
 
 function instagrabber_settings_page()
@@ -155,7 +162,7 @@ function instagrabber_settings_page()
 	?>
 	<form action='options.php' method='post'>
 
-		<h2>Instagrabber Settings Admin Page</h2>
+		<h2>Instagrabber Settings</h2>
 
 		<?php
 			settings_fields('instagrabberPlugin');
