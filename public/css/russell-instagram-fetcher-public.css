@@ -2,3 +2,13 @@
  * All of the CSS for your public-facing functionality should be
  * included in this file.
  */
+.rm-instagrabber {
+  padding-bottom: 2em;
+}
+.rm-instagrabber p {
+  margin-top: 0.5em;
+}
+.rm-instagrabber time {
+  opacity: 0.5;
+  font-size: 0.8em;
+}

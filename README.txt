@@ -22,6 +22,7 @@ This simple plugin displays the latest posts of a specified Instagram account. O
 1. Activate the plugin through the 'Plugins' menu in WordPress
 1. Specify an Instagram username and post limit in `Admin > Settings > Instagrabber`. The default post limit is 5.
 1. Place the `[instagrabber]` shortcode in your page or posts.
+1. Styling can be changed by modifying `russell-instagram-fetcher\public\css\russell-instagram-fetcher-public.css`.
 
 == Frequently Asked Questions ==
 

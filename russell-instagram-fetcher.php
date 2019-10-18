@@ -98,7 +98,7 @@ function instagrabber_get_ig_posts($atts)
 
 function add_instagrabber_stylesheet()
 {
-	wp_register_style('rm-instagrabber-styles', plugin_dir_url(__FILE__) . 'styles/rm-instagrabber-styles.css');
+	wp_register_style('rm-instagrabber-styles', plugin_dir_url(__FILE__) . 'public/css/russell-instagram-fetcher-public.css');
 	wp_enqueue_style('rm-instagrabber-styles');
 }
 
